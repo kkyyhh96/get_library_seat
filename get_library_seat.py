@@ -62,15 +62,15 @@ def get_seat(cookies, date, seat, start, end):
 
 cookies = None
 # 个人信息在这里进行填写
-username='20143011300'
-password='0'
-date='2016-12-17'
-seat='6152'
-start='540'
+username='2014'
+password=''
+seat=''
+start='570'
 end='1320'
 # 开始抓取座位的时间
-get_seat_hour=22
+get_seat_hour=9
 get_seat_minute=25
+get_seat_minute_2=35
 
 cookies = get_init_page()
 get_image(cookies)
@@ -87,19 +87,25 @@ while not login_success:
 print("登陆成功！")
 
 # 开始抢座位
-localtime=datetime.datetime.now()
-while not (localtime.hour>=get_seat_hour and localtime.minute>=get_seat_minute):
-    # 如果没有到达抢座时刻，保持停留在这个网页
-	stay_page(cookies)
-	localtime = datetime.datetime.now()
-	print(localtime)
-	time.sleep(30)
-else:
-# 当到了抢座位的时刻，开始抢座位，每隔5s抢一次
-    count=1
-    while count<300:
-        stay_page(cookies)
+while 2>1:
+    localtime=datetime.datetime.now()
+    if not (localtime.hour==get_seat_hour and localtime.minute>=get_seat_minute and localtime.minute<=get_seat_minute_2):
+        try:
+            # 如果没有到达抢座时刻，保持停留在这个网页
+            stay_page(cookies)
+        except e:
+            print("Something error!")
+        print("保持在线！")
+        print(localtime)
+        time.sleep(30)
+    else:
+        try:
+            # 当到了抢座位的时刻，开始抢座位，每隔3s抢一次
+            stay_page(cookies)
+        except e:
+            print("Something error!")
+        date=str(localtime.date().today()+datetime.timedelta(days=1))
         get_seat(cookies,date,seat,start,end)
+        print(date)
         print("抢座中！")
-        count=count+1
-        time.sleep(5)
+        time.sleep(3)
