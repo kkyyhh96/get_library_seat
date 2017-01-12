@@ -1,5 +1,6 @@
 # coding:utf-8
 # 作者 康雨豪
+# version:5.0
 import requests
 from PIL import Image
 import datetime
@@ -8,14 +9,14 @@ import time
 # 获取最初的cookie
 def get_init_page():
     init_url = "http://seat.lib.whu.edu.cn/login?targetUri=/"
-    r = requests.get(init_url)
+    r = requests.get(init_url,timeout=15)
     cookies = r.cookies
     return cookies
 
 # 获取图片及cookie
 def get_image(cookies):
     im_url = "http://seat.lib.whu.edu.cn/simpleCaptcha/captcha"
-    im = requests.get(im_url, cookies=cookies)
+    im = requests.get(im_url, cookies=cookies,timeout=15)
     with open("image.png", 'wb') as out_file:
         data = im.content
         out_file.write(data)
@@ -32,7 +33,7 @@ def login_page(code, cookies,username,password):
         "Connection": "keep-alive"
     }
     sign_in_url = "http://seat.lib.whu.edu.cn/auth/signIn"
-    r = requests.post(url=sign_in_url, cookies=cookies, params=params, headers=headers)
+    r = requests.post(url=sign_in_url, cookies=cookies, params=params, headers=headers,timeout=30)
     if r.url == 'http://seat.lib.whu.edu.cn/':
         return True;
     else:
@@ -44,7 +45,7 @@ def stay_page(cookies):
     headers = {
         "Connection": "keep-alive"
     }
-    r = requests.get(url=stay_url, cookies=cookies,headers=headers)
+    r = requests.get(url=stay_url, cookies=cookies,headers=headers,timeout=15)
     print(r.text)
     return r
 
@@ -57,18 +58,18 @@ def get_seat(cookies, date, seat, start, end):
         'start': str(start),
         'end': str(end)
     }
-    r= requests.post(url=register_url, cookies=cookies, params=params)
+    r= requests.post(url=register_url, cookies=cookies, params=params,timeout=15)
     print(r.text)
 
 cookies = None
 # 个人信息在这里进行填写
-username='2014'
-password=''
-seat=''
+username='201430113000'
+password='00'
+seat='0'
 start='570'
 end='1320'
 # 开始抓取座位的时间
-get_seat_hour=9
+get_seat_hour=22
 get_seat_minute=25
 get_seat_minute_2=35
 
@@ -93,8 +94,8 @@ while 2>1:
         try:
             # 如果没有到达抢座时刻，保持停留在这个网页
             stay_page(cookies)
-        except e:
-            print("Something error!")
+        except Exception as e:
+            print(e)
         print("保持在线！")
         print(localtime)
         time.sleep(30)
@@ -102,10 +103,12 @@ while 2>1:
         try:
             # 当到了抢座位的时刻，开始抢座位，每隔3s抢一次
             stay_page(cookies)
-        except e:
-            print("Something error!")
+        except Exception as e:
+            print(e)
         date=str(localtime.date().today()+datetime.timedelta(days=1))
-        get_seat(cookies,date,seat,start,end)
+        try:
+            get_seat(cookies,date,seat,start,end)
+        except Exception as e:
         print(date)
         print("抢座中！")
         time.sleep(3)
