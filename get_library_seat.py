@@ -109,6 +109,7 @@ while 2>1:
         try:
             get_seat(cookies,date,seat,start,end)
         except Exception as e:
+            print(e)
         print(date)
         print("抢座中！")
         time.sleep(3)
