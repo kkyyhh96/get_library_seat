@@ -107,8 +107,7 @@ def __main__():
                 stay_page(cookies)
             except Exception as e:
                 print(e)
-            print("保持在线！")
-            print(localtime)
+            print("保持在线！"+str(localtime))
             time.sleep(30)
         else:
             try:
