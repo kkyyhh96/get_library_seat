@@ -1,7 +1,7 @@
 # coding:utf-8
 # version:python3.5.1
 # 作者 康雨豪
-# code_version:5.0
+# code_version:6.0
 import datetime
 import re
 import time
@@ -85,9 +85,9 @@ def get_seat(cookies, date, seat, start, end):
 # 主要步骤
 def __main__():
     # 个人信息在这里进行填写
-    username = '2014301130041'
-    password = '061236'
-    seat = '3497'
+    username = '20143011300'
+    password = '0'
+    seat = '3'
     start = '570'
     end = '1320'
     # 开始抓取座位的时间
