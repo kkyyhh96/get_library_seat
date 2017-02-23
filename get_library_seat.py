@@ -88,9 +88,9 @@ def get_seat(cookies, date, seat, start, end):
 # 主要步骤
 def __main__():
     # 个人信息在这里进行填写
-    username = '2014301130041'
-    password = '061236'
-    seat = '8631'
+    username = '20143011300'
+    password = '06'
+    seat = '8'
     start = '570'
     end = '1320'
     # 开始抓取座位的时间
