@@ -5,7 +5,7 @@
 import datetime
 import re
 import time
-
+import varification_decode
 import requests
 from PIL import Image
 
@@ -91,21 +91,22 @@ def __main__():
     start = '570'
     end = '1320'
     # 开始抓取座位的时间
-    get_seat_hour = 11
-    get_seat_minute = 00
-    get_seat_minute_2 = 59
+    get_seat_hour = 22
+    get_seat_minute = 25
+    get_seat_minute_2 = 35
 
     # 登录
     cookies = get_init_page()
     get_image(cookies)
-    valid_code = input("请输入验证码:\n")
-
+    #valid_code = input("请输入验证码:\n")
+    valid_code=varification_decode.justify_code()
     login_success = login_page(valid_code, cookies, username, password)
     while not login_success:
         print("登陆错误！请重新输入验证码！")
         cookies = get_init_page()
         get_image(cookies)
-        valid_code = input("请输入验证码\n")
+        #valid_code = input("请输入验证码\n")
+        valid_code=varification_decode.justify_code()
         login_success = login_page(valid_code, cookies, username, password)
 
     print("登陆成功！")
@@ -140,6 +141,7 @@ def __main__():
             except Exception as e:
                 print(e)
             time.sleep(3)
+    __main__()
 
 
 __main__()
