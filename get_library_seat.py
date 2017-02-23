@@ -6,6 +6,7 @@ import datetime
 import re
 import time
 
+import psycopg2
 import requests
 from PIL import Image
 
@@ -85,6 +86,32 @@ def get_seat(cookies, date, seat, start, end):
         return False
 
 
+# 连接数据库
+def db_connect():
+    connection = psycopg2.connect(database="LibrarySeat", user="postgres",
+                                  password="postgres", host="127.0.0.1", port="5432")
+    cursor = connection.cursor()
+    return connection, cursor
+
+
+# 查询座位信息
+def query_seat(connection, cursor, username):
+    try:
+        sql_command_select = "SELECT seat,start_time,end_time FROM seat WHERE username={0};".format(username)
+        cursor.execute(sql_command_select)
+        data = cursor.fetchone()
+        try:
+            seat = str(data).split(',')[0].split('(')[1]
+            start_time = str(data).split(',')[1]
+            end_time = str(data).split(',')[2].split(')')[0]
+            return seat, start_time, end_time
+        except Exception:
+            return None, None, None
+    except Exception as e:
+        print(e)
+        connection.rollback()
+
+
 # 主要步骤
 def __main__():
     # 个人信息在这里进行填写
@@ -98,6 +125,9 @@ def __main__():
     get_seat_minute = 25
     get_seat_minute_2 = 35
 
+    # 连接数据库
+    connect, cursor = db_connect()
+    seat, start, end = query_seat()
     # 登录
     cookies = get_init_page()
     get_image(cookies)
@@ -122,17 +152,19 @@ def __main__():
         if not (
                             localtime.hour == get_seat_hour and localtime.minute >= get_seat_minute and localtime.minute <= get_seat_minute_2):
             try:
-                # 如果没有到达抢座时刻，保持停留在这个网页
+                # 如果没有到达抢座时刻,保持停留在这个网页
                 if stay_page(cookies) is False:
                     print("需要重新登录!")
                     break
             except Exception as e:
                 print(e)
             print("保持在线！" + str(localtime))
+            seat, start, end = query_seat()
+            # 保持停留的时间
             time.sleep(3)
         else:
             try:
-                # 当到了抢座位的时刻，开始抢座位，每隔3s抢一次
+                # 当到了抢座位的时刻,开始抢座位,每隔3s抢一次
                 stay_page(cookies)
             except Exception as e:
                 print(e)
