@@ -1,7 +1,7 @@
 # coding:utf-8
 # version:python3.5.1
 # 作者 康雨豪
-# code_version:6.0
+# code_version:7.0
 
 import requests
 from PIL import Image
@@ -19,7 +19,7 @@ def get_image():
 # 提取验证码
 def extract_alphabet():
     # 打开图片
-    image = Image.open("code.png")
+    image = Image.open("image.png")
     # 将图片转换为二值化图片
     image = image.convert("L")
     for x in range(image.size[0]):
@@ -128,9 +128,9 @@ def justify_code():
     if result == True:
         # 计算特征向量
         vector = compute_vector(letters, image)
-        code=""
+        code = ""
         for string in vector:
-            code+=str(string)
+            code += str(string)
         return code
     else:
         return None
@@ -143,5 +143,4 @@ result, letters = split_matrix_left2right(image)
 if result == True:
     # 计算特征向量
     vector = compute_vector(letters, image)
-    print(vector)
 justify_code()

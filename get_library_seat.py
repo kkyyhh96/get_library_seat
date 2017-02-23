@@ -1,13 +1,15 @@
 # coding:utf-8
 # version:python3.5.1
 # 作者 康雨豪
-# code_version:6.0
+# code_version:7.0
 import datetime
 import re
 import time
-import varification_decode
+
 import requests
 from PIL import Image
+
+import varification_decode
 
 
 # 获取最初的cookie
@@ -27,7 +29,8 @@ def get_image(cookies):
         out_file.write(data)
     # 打开图片
     image = Image.open("image.png")
-    image.show()
+    # image.show()
+    image.close()
 
 
 # 登录系统
@@ -85,9 +88,9 @@ def get_seat(cookies, date, seat, start, end):
 # 主要步骤
 def __main__():
     # 个人信息在这里进行填写
-    username = '20143011300'
-    password = '0'
-    seat = '3'
+    username = '2014301130041'
+    password = '061236'
+    seat = '8631'
     start = '570'
     end = '1320'
     # 开始抓取座位的时间
@@ -98,15 +101,17 @@ def __main__():
     # 登录
     cookies = get_init_page()
     get_image(cookies)
-    #valid_code = input("请输入验证码:\n")
-    valid_code=varification_decode.justify_code()
+    # valid_code = input("请输入验证码:\n")
+    valid_code = varification_decode.justify_code()
+    print(valid_code)
     login_success = login_page(valid_code, cookies, username, password)
     while not login_success:
         print("登陆错误！请重新输入验证码！")
         cookies = get_init_page()
         get_image(cookies)
-        #valid_code = input("请输入验证码\n")
-        valid_code=varification_decode.justify_code()
+        # valid_code = input("请输入验证码\n")
+        valid_code = varification_decode.justify_code()
+        print(valid_code)
         login_success = login_page(valid_code, cookies, username, password)
 
     print("登陆成功！")
