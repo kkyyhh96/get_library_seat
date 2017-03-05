@@ -106,9 +106,9 @@ class user_seat(object):
 class get_library_seat2(object):
     def __init__(self):
         # 设置每天抢座位的时刻
-        self.start_hour = 20#22
-        self.start_time_minute = 1#24
-        self.end_time_minute = 59#33
+        self.start_hour = 22
+        self.start_time_minute = 24
+        self.end_time_minute = 33
 
         # 抢座总程序
 
