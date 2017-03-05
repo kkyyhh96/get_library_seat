@@ -120,9 +120,9 @@ class get_library_seat2(object):
                                 time_now.hour == self.start_hour and time_now.minute >= self.start_time_minute and time_now.minute >= self.start_time_minute):
                 time.sleep(240)
             else:
-                #如果到达了抢座的时间,连接数据库并进行抢座
-                connection,cursor=self.db_connect()
-                self.query_seat(connection,cursor)
+                # 如果到达了抢座的时间,连接数据库并进行抢座
+                connection, cursor = self.db_connect()
+                self.query_seat(connection, cursor)
                 time.sleep(1)
 
     # 连接数据库
@@ -130,7 +130,7 @@ class get_library_seat2(object):
         connection = psycopg2.connect(database="LibrarySeat", user="postgres",
                                       password="postgres",
                                       host="127.0.0.1",
-                                      #host="139.196.243.189",
+                                      # host="139.196.243.189",
                                       port="5432")
         cursor = connection.cursor()
         return connection, cursor
@@ -159,5 +159,5 @@ class get_library_seat2(object):
             connection.rollback()
 
 
-get_library_seat2_test=get_library_seat2()
+get_library_seat2_test = get_library_seat2()
 get_library_seat2_test.get_seat()
