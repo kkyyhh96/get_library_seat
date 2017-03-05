@@ -44,7 +44,7 @@ class user_seat(object):
         localtime = datetime.datetime.now()
         # 获取第二天的日期
         date = str(localtime.date().today() + datetime.timedelta(days=1))
-        get_seat_result = self.get_seat(cookies, date, self.start_time, self.end_time, self.seat)
+        get_seat_result = self.get_seat(cookies, date, self.seat, self.start_time, self.end_time)
         if get_seat_result is True:
             print("抢座成功！{0}".format(self.username))
 
@@ -149,9 +149,9 @@ class get_library_seat2(object):
                 try:
                     username = str(data).split(',')[0].split('(')[1]
                     password = str(data).split(',')[1].split('\'')[1]
-                    seat = str(data).split(',')[2]
-                    start_time = str(data).split(',')[3]
-                    end_time = str(data).split(',')[4].split(')')[0]
+                    seat = str(data).split(',')[2].split(' ')[1]
+                    start_time = str(data).split(',')[3].split(' ')[1]
+                    end_time = str(data).split(',')[4].split(')')[0].split(' ')[1]
                     user = user_seat(username, password, seat, start_time, end_time)
                     # 为该用户抢座
                     user.get_seat_main()
