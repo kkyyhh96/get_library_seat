@@ -121,9 +121,12 @@ class get_library_seat2(object):
                 time.sleep(240)
             else:
                 # 如果到达了抢座的时间,连接数据库并进行抢座
-                connection, cursor = self.db_connect()
-                self.query_seat(connection, cursor)
-                time.sleep(1)
+                try:
+                    connection, cursor = self.db_connect()
+                    self.query_seat(connection, cursor)
+                    time.sleep(1)
+                except Exception as e:
+                    print(e)
 
     # 连接数据库
     def db_connect(self):
