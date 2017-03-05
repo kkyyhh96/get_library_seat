@@ -128,7 +128,10 @@ class get_library_seat2(object):
     # 连接数据库
     def db_connect(self):
         connection = psycopg2.connect(database="LibrarySeat", user="postgres",
-                                      password="postgres", host="139.196.243.189", port="5432")
+                                      password="postgres",
+                                      host="127.0.0.1",
+                                      #host="139.196.243.189",
+                                      port="5432")
         cursor = connection.cursor()
         return connection, cursor
 
