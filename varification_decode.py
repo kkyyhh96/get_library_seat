@@ -11,9 +11,13 @@ from PIL import Image
 def get_image():
     im_url = "http://seat.lib.whu.edu.cn/simpleCaptcha/captcha"
     im = requests.get(im_url, timeout=15)
-    with open("image.png", 'wb') as out_file:
-        data = im.content
-        out_file.write(data)
+    try:
+        # 写入图片
+        with open("image.png", 'wb') as out_file:
+            data = im.content
+            out_file.write(data)
+    except Exception as e:
+        print(e)
 
 
 # 提取验证码
@@ -58,6 +62,8 @@ def split_matrix_left2right(image):
             letters.append((start, end))
 
         inletter = False
+
+    # 如果验证码分为了5个部分则成功
     if letters.__len__() == 5:
         return True, letters
     else:
@@ -96,6 +102,7 @@ def compute_vector(letters, image):
         vector = []
         # 获取训练集的图片
         # im.save("./dataset/{0}.png".format(x_start),"png")
+        # 返回具体的字符
     return string_list
 
 
@@ -111,6 +118,7 @@ def match_code(vector):
         white = line.split(',')[3]
         black_half = line.split(',')[4]
         white_half = line.split(',')[5]
+        # 计算特征向量
         square = (lambda x, y: (x - y) * (x - y))
         rate = square(int(size), vector[0]) + 0.1 * square(int(black), vector[1]) + 0.1 * square(int(white), vector[2])
         rate += 0.1 * square(int(black_half), vector[3]) + 0.1 * square(int(white_half), vector[4])
@@ -121,26 +129,29 @@ def match_code(vector):
     return match_str
 
 
+# 识别验证码
 def justify_code():
-    image = extract_alphabet()
-    result, letters = split_matrix_left2right(image)
-    # 如果分割成为了5个字符
-    if result == True:
-        # 计算特征向量
-        vector = compute_vector(letters, image)
-        code = ""
-        for string in vector:
-            code += str(string)
-        return code
-    else:
-        return None
+    try:
+        image = extract_alphabet()
+        result, letters = split_matrix_left2right(image)
+        # 如果分割成为了5个字符
+        if result == True:
+            # 计算特征向量
+            vector = compute_vector(letters, image)
+            code = ""
+            for string in vector:
+                code += str(string)
+            return code
+        else:
+            return None
+    except Exception as e:
+        print(e)
 
-
-get_image()
-image = extract_alphabet()
-result, letters = split_matrix_left2right(image)
-# 如果分割成为了5个字符
-if result == True:
-    # 计算特征向量
-    vector = compute_vector(letters, image)
-justify_code()
+# get_image()
+# image = extract_alphabet()
+# result, letters = split_matrix_left2right(image)
+## 如果分割成为了5个字符
+# if result == True:
+#    # 计算特征向量
+#    vector = compute_vector(letters, image)
+# justify_code()
