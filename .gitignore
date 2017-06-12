@@ -1,0 +1,6 @@
+# In this file you can define some file which do not neet track or upload to
+# git servers 
+
+
+# python running cache files
+__pycache__/
