@@ -31,20 +31,23 @@ class user_seat(object):
         # 识别验证码
         code = varification_decode.justify_code()
         # 登录网页
-        login_result = self.login_page(code, cookies, self.username, self.password)
+        login_result = self.login_page(
+            code, cookies, self.username, self.password)
         # 当登录失败的时候,重新登录
         while login_result is False:
             cookies = self.get_init_page()
             self.get_image(cookies)
             code = varification_decode.justify_code()
-            login_result = self.login_page(code, cookies, self.username, self.password)
+            login_result = self.login_page(
+                code, cookies, self.username, self.password)
         print("登陆成功！")
         # 发送抢座请求
         # 获取当前日期
         localtime = datetime.datetime.now()
         # 获取第二天的日期
         date = str(localtime.date().today() + datetime.timedelta(days=1))
-        get_seat_result = self.get_seat(cookies, date, self.seat, self.start_time, self.end_time)
+        get_seat_result = self.get_seat(
+            cookies, date, self.seat, self.start_time, self.end_time)
         if get_seat_result is True:
             print("抢座成功！{0}".format(self.username))
         else:
@@ -72,15 +75,18 @@ class user_seat(object):
     # 登录系统
     def login_page(self, code, cookies, username, password):
         # 个人信息
-        params = dict(username=str(username), password=str(password), captcha=code)
+        params = dict(username=str(username),
+                      password=str(password), captcha=code)
 
         # 登录
         headers = {
             "Connection": "keep-alive"
         }
         sign_in_url = "http://seat.lib.whu.edu.cn/auth/signIn"
-        r = requests.post(url=sign_in_url, cookies=cookies, params=params, headers=headers, timeout=30)
-        login_word = re.findall(r'{0}'.format("我的预约").encode('utf-8'), r.text.encode('utf-8'))
+        r = requests.post(url=sign_in_url, cookies=cookies,
+                          params=params, headers=headers, timeout=30)
+        login_word = re.findall(r'{0}'.format(
+            "我的预约").encode('utf-8'), r.text.encode('utf-8'))
         # 判断是否登录成功
         if login_word.__len__() > 0:
             return True
@@ -96,8 +102,10 @@ class user_seat(object):
             'start': str(start),
             'end': str(end)
         }
-        r = requests.post(url=register_url, cookies=cookies, params=params, timeout=2)
-        get_seat_word = re.findall(r'{0}'.format("系统已经为您预定").encode('utf-8'), r.text.encode('utf-8'))
+        r = requests.post(url=register_url, cookies=cookies,
+                          params=params, timeout=2)
+        get_seat_word = re.findall(r'{0}'.format(
+            "系统已经为您预定").encode('utf-8'), r.text.encode('utf-8'))
         # 判断是否抢座成功
         if get_seat_word.__len__() > 0:
             return True
@@ -118,8 +126,9 @@ class get_library_seat2(object):
         while 2 > 1:
             time_now = datetime.datetime.now()
             # 如果没有到抢座时间,停止4分钟
-            if not (
-                                time_now.hour == self.start_hour and time_now.minute >= self.start_time_minute and time_now.minute <= self.end_time_minute):
+            if not (time_now.hour == self.start_hour and
+                    time_now.minute >= self.start_time_minute and
+                    time_now.minute <= self.end_time_minute):
                 time.sleep(240)
             else:
                 # 如果到达了抢座的时间,连接数据库并进行抢座
@@ -152,9 +161,12 @@ class get_library_seat2(object):
                     username = str(data).split(',')[0].split('(')[1]
                     password = str(data).split(',')[1].split('\'')[1]
                     seat = str(data).split(',')[2].split(' ')[1].split(' ')[0]
-                    start_time = str(data).split(',')[3].split(' ')[1].split(' ')[0]
-                    end_time = str(data).split(',')[4].split(')')[0].split(' ')[1].split(' ')[0]
-                    user = user_seat(username, password, seat, start_time, end_time)
+                    start_time = str(data).split(
+                        ',')[3].split(' ')[1].split(' ')[0]
+                    end_time = str(data).split(',')[4].split(')')[
+                        0].split(' ')[1].split(' ')[0]
+                    user = user_seat(username, password, seat,
+                                     start_time, end_time)
                     # 为该用户抢座
                     user.get_seat_main()
                 except Exception as e:
