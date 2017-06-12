@@ -34,10 +34,10 @@ class one_day(object):
             sql_command_select = "SELECT * FROM seat"
             self.cursor.execute(sql_command_select)
             users = self.cursor.fetchall()
+            self.user=[]
             for data in users:
                 # 获取每一个用户的座位信息
                 try:
-                    print(data[0])
                     self.user.append(
                         person(str(data[0]), str(data[1]), str(data[2]), str(self.date), str(data[3]), str(data[4])))
                 except Exception as e:
@@ -66,4 +66,5 @@ o = one_day()
 o.db_connect()#连接数据库
 o.query_seat()#获取所有人的座位
 o.all_person_login() #所有人都登录
+
 o.all_person_get_seat()#抢座
