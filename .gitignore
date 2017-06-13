@@ -4,3 +4,4 @@
 
 # python running cache files
 __pycache__/
+.vscode/
