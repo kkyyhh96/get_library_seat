@@ -25,16 +25,16 @@ def login():
     '''
     登录
     '''
-    # o.all_person_login()
+    o.all_person_login()
     print('do')
 
 def get_seat():
     '''开始抢座'''
-    # o.all_person_get_seat()
+    o.all_person_get_seat()
     print('do after')
 
 # BlockingScheduler
 Scheduler = BlockingScheduler()
-Scheduler.add_job(login, 'cron', hour='22', minute='58')  # 每天的22:25开始登录
-Scheduler.add_job(get_seat, 'cron', hour='22', minute='59')  # 每天22:30开始抢座
+Scheduler.add_job(login, 'cron', hour=23, minute=16, second=0)  # 每天的22:25开始登录
+Scheduler.add_job(get_seat, 'cron', hour=23, minute=16, second=30)  # 每天22:30开始抢座
 Scheduler.start()

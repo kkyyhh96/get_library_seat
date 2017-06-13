@@ -107,7 +107,8 @@ class person(object):
             if get_seat_word.__len__() > 0:
                 self.if_get_seat = True
                 print("{0}抢座成功!{1}".format(str(self.username), str(self.date)))
-
+            else:
+                print('{0}抢座失败!{1}'.format(str(self.username), str(self.date)))
 # p=person("2014301130041","987456","6163","2017-06-12","810","840")
 # p.login_main() #登录
 # p.get_seat() #获取座位
