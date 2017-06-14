@@ -14,6 +14,7 @@ class one_day(object):
     '''
     一天中应该执行的所有的操作
     '''
+
     def __init__(self):
         '''
         获取第二天的日期
@@ -80,6 +81,11 @@ class one_day(object):
             except Exception as e:
                 print(e)
 
-
-
-
+    def is_all_get_seat(self):
+        '''
+        判断是不是所有的用户都获取到的座位
+        '''
+        for u in self.user:
+            if not u.if_get_seat:
+                return False
+        return True

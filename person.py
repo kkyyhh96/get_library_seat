@@ -65,7 +65,6 @@ class person(object):
         r = requests.post(url=sign_in_url,
                           cookies=self.cookies,
                           params=params, headers=headers, timeout=3)
-        # TODO:这个地方应该检查是否操作成功。
         login_word = re.findall(r'{0}'.format(
             "我的预约").encode('utf-8'), r.text.encode('utf-8'))
         # 判断是否登录成功
@@ -89,8 +88,10 @@ class person(object):
             if count >= 8:
                 break
 
-    # 预定座位
     def get_seat(self):
+        '''
+        预定座位
+        '''
         if self.if_get_seat is False:
             register_url = "http://seat.lib.whu.edu.cn/selfRes"
             params = {
@@ -106,9 +107,7 @@ class person(object):
             # 判断是否抢座成功
             if get_seat_word.__len__() > 0:
                 self.if_get_seat = True
-                print("{0}抢座成功!{1}".format(str(self.username), str(self.date)))
+                # print("{0}抢座成功!{1}".format(str(self.username), str(self.date)))
             else:
-                print('{0}抢座失败!{1}'.format(str(self.username), str(self.date)))
-# p=person("2014301130041","987456","6163","2017-06-12","810","840")
-# p.login_main() #登录
-# p.get_seat() #获取座位
+                self.if_get_seat = False
+                # print('{0}抢座失败!{1}'.format(str(self.username), str(self.date)))
