@@ -77,7 +77,6 @@ def get_seat(cookies, date, seat, start, end):
     }
     try:
         requests.post(url=register_url, cookies=cookies, params=params, timeout=10)
-        print(os.getpid())
     except requests.exceptions.ConnectionError as e:
         print(e)
     finally:
